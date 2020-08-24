@@ -12,8 +12,7 @@ RUN git clone https://github.com/Ericsson/CodeChecker.git --depth 1 ~/codechecke
 RUN apt install -y nodejs && apt clean
 
 RUN cd ~/codechecker && make venv \
-    && source ~/codechecker/venv/bin/activate \
-    && make package
+    && bash -c 'source ~/codechecker/venv/bin/activate && make package'
 
 ENV PATH="~/codechecker/build/CodeChecker/bin:${PATH}"
 
