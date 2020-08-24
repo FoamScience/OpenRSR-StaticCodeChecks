@@ -18,4 +18,5 @@ RUN cd ~/codechecker && make venv \
 ENV PATH="~/codechecker/build/CodeChecker/bin:${PATH}"
 
 RUN bash -c 'source ~/codechecker/venv/bin/activate >> ~/.bashrc' \
-    && bash -c 'source /opt/openfoam7/etc/bashrc >> ~/.bashrc'
+    && bash -c 'source /opt/openfoam7/etc/bashrc >> ~/.bashrc' \
+    && bash -c 'CodeChecker server --port 80'
