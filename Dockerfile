@@ -15,6 +15,7 @@ RUN cd /codechecker && make venv \
 
 ENV PATH="/codechecker/build/CodeChecker/bin:${PATH}"
 
-RUN bash -c 'source /codechecker/venv/bin/activate >> /etc/profile' \
-    && bash -c 'source /opt/openfoam7/etc/bashrc >> /etc/profile'
-RUN bash -c 'source /codechecker/venv/bin/activate && CodeChecker server --port 80'
+RUN bash -c 'echo "source /codechecker/venv/bin/activate" >> ~/.profile' \
+    && bash -c 'echo "source /opt/openfoam7/etc/bashrc" >> /.profile'
+
+CMD bash -l -c "source /codechecker/venv/bin/activate; CodeChecker server --port $PORT"
