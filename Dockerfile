@@ -18,4 +18,7 @@ ENV PATH="/codechecker/build/CodeChecker/bin:${PATH}"
 RUN bash -c 'echo "source /codechecker/venv/bin/activate" >> ~/.profile' \
     && bash -c 'echo "source /opt/openfoam7/etc/bashrc" >> /.profile'
 
-CMD bash -l -c "source /codechecker/venv/bin/activate; CodeChecker server --port $PORT"
+COPY parse_url.py .
+
+CMD bash -l -c \
+    "source /codechecker/venv/bin/activate; CodeChecker server --port $PORT `./parse_url.py`"
