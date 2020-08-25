@@ -19,6 +19,8 @@ RUN bash -c 'echo "source /codechecker/venv/bin/activate" >> ~/.profile' \
     && bash -c 'echo "source /opt/openfoam7/etc/bashrc" >> /.profile'
 
 COPY parse_url.py .
+ENV DB_CMD=`./parse_url.py`
+RUN bash -c 'source /codechecker/venv/bin/activate; pip install pg8000'
 
 CMD bash -l -c \
     "source /codechecker/venv/bin/activate; CodeChecker server --port $PORT `./parse_url.py`"
