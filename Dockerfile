@@ -8,13 +8,13 @@ RUN export DEBIAN_FRONTEND=noninteractive; apt update && apt-get install -q -y \
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt install -y nodejs && apt clean
 
-RUN git clone https://github.com/Ericsson/CodeChecker --depth 1 -b "v6.13.0" /codechecker
+RUN git clone https://github.com/Ericsson/CodeChecker --depth 1 /codechecker
 
 RUN cd /codechecker && make venv \
     && bash -c 'source /codechecker/venv/bin/activate && make package'
 
 ENV PATH="/codechecker/build/CodeChecker/bin:${PATH}"
-RUN chmod 777 /codechecker
+RUN chmod 777 /.codechecker
 
 RUN bash -c 'echo "source /codechecker/venv/bin/activate" >> ~/.profile' \
     && bash -c 'echo "source /opt/openfoam7/etc/bashrc" >> ~/.profile'
