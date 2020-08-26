@@ -14,7 +14,7 @@ RUN cd /codechecker && make venv \
     && bash -c 'source /codechecker/venv/bin/activate && make package'
 
 ENV PATH="/codechecker/build/CodeChecker/bin:${PATH}"
-RUN chmod 777 /.codechecker
+RUN mkdir -m 777 /.codechecker
 
 RUN bash -c 'echo "source /codechecker/venv/bin/activate" >> ~/.profile' \
     && bash -c 'echo "source /opt/openfoam7/etc/bashrc" >> ~/.profile'
@@ -22,7 +22,8 @@ RUN bash -c 'echo "source /codechecker/venv/bin/activate" >> ~/.profile' \
 COPY parse_url.py .
 ENV DB_CMD=`./parse_url.py`
 ENV PGPASSFILE="/.pgpass"
-RUN bash -c 'source /codechecker/venv/bin/activate; pip install pg8000'
+RUN apt install postgresql-server-dev-all -y -q
+RUN bash -c 'source /codechecker/venv/bin/activate; pip install psycopg2'
 
 CMD bash -l -c \
-    "./parse_url.py --passfile > /.pgpass && source /codechecker/venv/bin/activate && CodeChecker server --port $PORT $DB_CMD"
+    "./parse_url.py --passfile > /.pgpass && source /codechecker/venv/bin/activate && CodeChecker server --host 0.0.0.0 --port $PORT $DB_CMD"
